@@ -12,6 +12,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
 
 @Entity
@@ -30,11 +31,15 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Size(min = 1)
 	@Column(nullable=false)
 	private String nombre;
 	
+	@Size(min = 1)
+	@Column(nullable=false)
 	private String apellido;
 	
+	@Size(min = 3)
 	@Column(nullable=false, unique=true)
 	private String email;
 	
