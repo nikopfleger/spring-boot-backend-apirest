@@ -5,9 +5,12 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -15,6 +18,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Entity
@@ -51,6 +56,14 @@ public class Cliente implements Serializable {
 	@Column(name="create_at")
 	@NotNull(message= "no puede estar vacío")
 	private Date createAt;
+	
+	private String foto;
+	
+	@ManyToOne(fetch= FetchType.LAZY) //CON LAZY SE GENERA UN PROXY, Y GENERA ATRIBUTOS EN EL JSON POR LO QUE LOS OMITO MAS ABAJO, SINO TIRA ERROR
+	@JoinColumn(name="region_id") //no hace falta toma region y id que es el id de region como region_id, pero lo puedo poner explicito
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //Omitimos atributos de generar JSON
+	@NotNull(message="la región no puede ser vacía")
+	private Region region;
 	
 //	@PrePersist
 //	public void prePersist() {
@@ -95,6 +108,22 @@ public class Cliente implements Serializable {
 
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+	public Region getRegion() {
+		return region;
+	}
+
+	public void setRegion(Region region) {
+		this.region = region;
 	}
 	
 	
